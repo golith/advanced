@@ -8,9 +8,12 @@ use yii\helpers\Html;
 $this->title = Yii::t('app', 'Update Policy: {nameAttribute}', [
     'nameAttribute' => $model->title,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Policies'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->policy_id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Policy'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = [
+    'label' => $model->title,
+    //'url' => ['view', 'id' => $model->policy_id]
+    ];
+$this->params['breadcrumbs'][] = Yii::t('app', 'Update Policy');
 ?>
 <div class="policy-update">
 

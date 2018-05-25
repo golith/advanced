@@ -9,6 +9,7 @@ use Yii;
  *
  * @property string $policy_id
  * @property string $title
+ * @property string $aim
  * @property string $text
  * @property string $created
  * @property string $updated
@@ -32,12 +33,23 @@ class Policy extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'text', 'created', 'updated', 'ps_id'], 'required'],
-            [['text'], 'string'],
-            [['created', 'updated'], 'safe'],
+            [['title', 'text', 'ps_id'], 'required'],
+
+            [['text', 'aim'], 'string'],
+
+            [['title', 'text', 'ps_id', 'aim',
+
+                'created', 'updated'], 'safe'],
+
             [['ps_id'], 'integer'],
+
             [['title'], 'string', 'max' => 255],
-            [['ps_id'], 'exist', 'skipOnError' => true, 'targetClass' => PolicyPack::className(), 'targetAttribute' => ['ps_id' => 'ps_id']],
+
+            [['ps_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => PolicyPack::className(),
+                'targetAttribute' => ['ps_id' => 'ps_id']],
         ];
     }
 
@@ -47,12 +59,13 @@ class Policy extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'policy_id' => Yii::t('app', 'Policy ID'),
+            'policy_id' => Yii::t('app', 'Policy Name'),
             'title' => Yii::t('app', 'Title'),
-            'text' => Yii::t('app', 'Text'),
+            'aim' => Yii::t('app', 'Aim'),
+            'text' => Yii::t('app', 'Policy'),
             'created' => Yii::t('app', 'Created'),
             'updated' => Yii::t('app', 'Updated'),
-            'ps_id' => Yii::t('app', 'Ps ID'),
+            'ps_id' => Yii::t('app', 'Package'),
         ];
     }
 

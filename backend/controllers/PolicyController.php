@@ -37,10 +37,12 @@ class PolicyController extends Controller
     {
         $searchModel = new PolicySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $policy = new Policy;
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'policy' => $policy,
         ]);
     }
 
@@ -67,6 +69,10 @@ class PolicyController extends Controller
         $model = new Policy();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            $model->created = Date ('Y-m-d H:i:s');
+            $model->save();
+
             return $this->redirect(['view', 'id' => $model->policy_id]);
         }
 
@@ -87,6 +93,10 @@ class PolicyController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            $model->created = Date ('Y-m-d H:i:s');
+            $model->save();
+
             return $this->redirect(['view', 'id' => $model->policy_id]);
         }
 
@@ -124,4 +134,14 @@ class PolicyController extends Controller
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
+
+    public function actionAjaxView($id)
+    {
+        return $this->renderPartial('_view',[
+            'model'=> $this->findModel($id),
+        ]);
+    }
+
+
+
 }

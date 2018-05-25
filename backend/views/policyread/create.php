@@ -4,13 +4,13 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Policy */
+/* @var $model backend\models\Policyread */
 
-$this->title = Yii::t('app', 'Create Policy');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Policy List'), 'url' => ['index']];
+$this->title = Yii::t('app', 'Create Policyread');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Policyreads'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="policy-create">
+<div class="policyread-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

@@ -3,16 +3,16 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Policypack;
-use backend\models\PolicypackSearch;
+use backend\models\Policyread;
+use backend\models\PolicyreadSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * PolicypackController implements the CRUD actions for Policypack model.
+ * PolicyreadController implements the CRUD actions for Policyread model.
  */
-class PolicypackController extends Controller
+class PolicyreadController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,24 +30,42 @@ class PolicypackController extends Controller
     }
 
     /**
-     * Lists all Policypack models.
+     * Lists all Policyread models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new PolicypackSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $policypack = new Policypack;
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-            'policypack' => $policypack,
-        ]);
+        $searchModel = new PolicyreadSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        if( Yii::$app->user->can( 'see-policyread')) {
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        } else {
+            return $this->render('training', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }
+
+//        if( Yii::$app->user->can( 'see-policyread')) {
+//            $searchModel = new PolicyreadSearch();
+//            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+//
+//            return $this->render('index', [
+//                'searchModel' => $searchModel,
+//                'dataProvider' => $dataProvider,
+//            ]);
+//        } else {
+//            return $this->redirect(['trainer']);
+//        }
     }
 
     /**
-     * Displays a single Policypack model.
+     * Displays a single Policyread model.
      * @param string $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -59,19 +77,28 @@ class PolicypackController extends Controller
         ]);
     }
 
+    public function actionTraining($id)
+    {
+        return $this->render('_training', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
     /**
-     * Creates a new Policypack model.
+     * Creates a new Policyread model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Policypack();
+        $model = new Policyread();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $model->created = Date ('Y-m-d H:i:s');
+
+            $model->read_date = Date('Y-m-d H:i:s');
             $model->save();
-            return $this->redirect(['view', 'id' => $model->ps_id]);
+
+            return $this->redirect(['view', 'id' => $model->pr_id]);
         }
 
         return $this->render('create', [
@@ -80,7 +107,7 @@ class PolicypackController extends Controller
     }
 
     /**
-     * Updates an existing Policypack model.
+     * Updates an existing Policyread model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param string $id
      * @return mixed
@@ -92,10 +119,7 @@ class PolicypackController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
-            $model->updated = Date ('Y-m-d H:i:s');
-            $model->save();
-
-            return $this->redirect(['view', 'id' => $model->ps_id]);
+            return $this->redirect(['view', 'id' => $model->pr_id]);
         }
 
         return $this->render('update', [
@@ -104,7 +128,7 @@ class PolicypackController extends Controller
     }
 
     /**
-     * Deletes an existing Policypack model.
+     * Deletes an existing Policyread model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param string $id
      * @return mixed
@@ -118,25 +142,18 @@ class PolicypackController extends Controller
     }
 
     /**
-     * Finds the Policypack model based on its primary key value.
+     * Finds the Policyread model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param string $id
-     * @return Policypack the loaded model
+     * @return Policyread the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Policypack::findOne($id)) !== null) {
+        if (($model = Policyread::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
-    }
-
-    public function actionAjaxView($id)
-    {
-        return $this->renderPartial('_view',[
-            'model'=> $this->findModel($id),
-        ]);
     }
 }
