@@ -50,6 +50,12 @@ class Policy extends \yii\db\ActiveRecord
                 'skipOnError' => true,
                 'targetClass' => PolicyPack::className(),
                 'targetAttribute' => ['ps_id' => 'ps_id']],
+
+            [['policy_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Policy::className(),
+                'targetAttribute' => ['policy_id' => 'policy_id']],
         ];
     }
 
@@ -76,4 +82,10 @@ class Policy extends \yii\db\ActiveRecord
     {
         return $this->hasOne(PolicyPack::className(), ['ps_id' => 'ps_id']);
     }
+
+    public function getPolicyread()
+    {
+        return $this->hasMany(Policyread::className(), ['policy_id' => 'policy_id']);
+    }
+
 }

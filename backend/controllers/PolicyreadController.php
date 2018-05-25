@@ -35,33 +35,17 @@ class PolicyreadController extends Controller
      */
     public function actionIndex()
     {
-
         $searchModel = new PolicyreadSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        if( Yii::$app->user->can( 'see-policyread')) {
-            return $this->render('index', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-            ]);
-        } else {
-            return $this->render('training', [
-                'searchModel' => $searchModel,
-                'dataProvider' => $dataProvider,
-            ]);
-        }
+        //return $this->render('index', [
+        return $this->render('training', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
 
-//        if( Yii::$app->user->can( 'see-policyread')) {
-//            $searchModel = new PolicyreadSearch();
-//            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-//
-//            return $this->render('index', [
-//                'searchModel' => $searchModel,
-//                'dataProvider' => $dataProvider,
-//            ]);
-//        } else {
-//            return $this->redirect(['trainer']);
-//        }
+       // return $this->render('_training');
+
     }
 
     /**
@@ -155,5 +139,64 @@ class PolicyreadController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+
+    /** CUSTOM Fx's */
+    public function getUnread($id)
+    {
+        $policyCount = Policy::find()
+            ->count();
+
+        $policies = Policy::find()
+            ->all();
+
+        $policiesRead = Policyread::find()
+            ->where(['user_id' => $id])
+            ->all();
+
+        //iterate over the array of unread policies
+        if ($policyCount > 0) {
+
+            return array_diff($policies, $policiesRead);
+        }
+    }
+
+    public function actionLists($id)
+    {
+        $countDepartments = Department::find()
+            ->where(['company_id' => $id])
+            ->andWhere(['branch_id' => $id])
+            ->count();
+
+        $departments = Department::find()
+            ->where(['company_id' => $id])
+            ->andFilterWhere(['branch_id' => $id])
+            ->all();
+
+        if ($countDepartments > 0) {
+            foreach ($departments as $department) {
+                echo "<option value='" . $department->department_id . "'>" . $department->department_name . "</option>";
+            }
+        } else {
+            echo "<option>There are no Departments</option>";
+        }
+    }
+
+    /**
+     * *Displays a single Address model as a single AJAX response
+     * @param interger $id
+     * @return mixed
+     */
+    public function actionAjaxView($id)
+    {
+        return $this->renderPartial('_view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    public function getPolicies()
+    {
+        return $this->hasMany(Policy::className(), ['policy_id' => 'policy_id']);
     }
 }
