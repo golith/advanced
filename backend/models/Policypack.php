@@ -30,7 +30,7 @@ class Policypack extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['package', 'created', 'updated'], 'required'],
+            [['package'], 'required'],
             [['created', 'updated'], 'safe'],
             [['package'], 'string', 'max' => 255],
         ];

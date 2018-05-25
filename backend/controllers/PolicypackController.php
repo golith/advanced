@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\models;
+namespace backend\controllers;
 
 use Yii;
 use backend\models\Policypack;
@@ -67,6 +67,8 @@ class PolicypackController extends Controller
         $model = new Policypack();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            $model->created = Date ('Y-m-d H:i:s');
+            $model->save();
             return $this->redirect(['view', 'id' => $model->ps_id]);
         }
 
@@ -87,6 +89,10 @@ class PolicypackController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            $model->updated = Date ('Y-m-d H:i:s');
+            $model->save();
+
             return $this->redirect(['view', 'id' => $model->ps_id]);
         }
 
