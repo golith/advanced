@@ -4,13 +4,13 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Policypack */
+/* @var $model backend\models\Company */
 
-$this->title = Yii::t('app', 'Create Policypack');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Policypacks'), 'url' => ['index']];
+$this->title = Yii::t('app', 'Create Company');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Company List'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="policypack-create">
+<div class="company-create">
 
     <p>
         <?= Html::a(Yii::t('app', 'Company List'), ['company/index'], ['class' => 'btn btn-success']) ?>

@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "policy".
@@ -14,6 +15,7 @@ use Yii;
  * @property string $created
  * @property string $updated
  * @property string $ps_id
+ * @property string $file
  *
  * @property PolicyPack $ps
  */
@@ -22,6 +24,9 @@ class Policy extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+
+    public $file;
+
     public static function tableName()
     {
         return 'policy';
@@ -37,13 +42,13 @@ class Policy extends \yii\db\ActiveRecord
 
             [['text', 'aim'], 'string'],
 
-            [['title', 'text', 'ps_id', 'aim',
+            [['title', 'text', 'ps_id', 'aim', 'logo',
 
                 'created', 'updated'], 'safe'],
 
             [['ps_id'], 'integer'],
 
-            [['title'], 'string', 'max' => 255],
+            [[ 'title'], 'string', 'max' => 255],
 
             [['ps_id'],
                 'exist',
@@ -66,6 +71,7 @@ class Policy extends \yii\db\ActiveRecord
     {
         return [
             'policy_id' => Yii::t('app', 'Policy Name'),
+            'file' => Yii::t('app', 'Policy Logo'),
             'title' => Yii::t('app', 'Title'),
             'aim' => Yii::t('app', 'Aim'),
             'text' => Yii::t('app', 'Policy'),
@@ -86,6 +92,11 @@ class Policy extends \yii\db\ActiveRecord
     public function getPolicyread()
     {
         return $this->hasMany(Policyread::className(), ['policy_id' => 'policy_id']);
+    }
+
+    public function getLogoHtml()
+    {
+        return Html::img($this->logo);
     }
 
 }

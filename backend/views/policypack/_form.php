@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Policypack */
@@ -14,6 +15,12 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'package')->textInput(['maxlength' => true]) ?>
 
+    <?php
+    $photo =  $model->logo;
+    echo $photo? Html::img('@web/' . $photo) : '';
+    ?>
+    <?= $form->field($model, 'file')->fileInput(); ?>
+
     <div class="form-group">
 
         <?= Html::submitButton(Yii::t('app', 'Save'),
@@ -22,7 +29,12 @@ use yii\widgets\ActiveForm;
 
         <?= Html::a(Yii::t('app', 'Dont Save'),
             ['index'],
-            ['class' => 'btn btn-error'])
+            ['class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => Yii::t('app', 'Are you sure you want to leave this page?'),
+                    'method' => 'post',
+                ],
+            ])
         ?>
     </div>
 

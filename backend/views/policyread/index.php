@@ -7,6 +7,24 @@ use yii\widgets\Pjax;
 /* @var $searchModel backend\models\PolicyreadSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
+$this->registerJs("
+$('div.policyread-index').on('click','tr',function(){
+var id =$(this).data('key');
+$.ajax({
+'type' : 'GET',
+'url' : '$ajax_url',
+'dataType' : 'html',
+'data' : {
+        '$csrf_param' : '$csrf_token',
+        'id' : id
+},
+'success' : function(data){
+        $('#policyread-detail').html(data);
+}
+});
+});
+");
+
 $this->title = Yii::t('app', 'Policyreads');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -35,4 +53,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
     <?php Pjax::end(); ?>
+</div>
+<div id="policyread-detail">
+    <?php echo $this->render('_view', ['model' => $policyread]); ?>
 </div>

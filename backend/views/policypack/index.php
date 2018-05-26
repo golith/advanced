@@ -30,10 +30,15 @@ $.ajax({
 });
 ");
 
- $this->title = Yii::t('app', 'Policy Packs');
+ $this->title = Yii::t('app', 'Policy Pack List');
  $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="policypack-index">
+
+    <p>
+        <?= Html::a(Yii::t('app', 'Company List'), ['company/index'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Policy List'), ['policy/index'], ['class' => 'btn btn-warning']) ?>
+    </p>
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -51,6 +56,7 @@ $.ajax({
             //['class' => 'yii\grid\SerialColumn'],
             //'ps_id',
             'package',
+            //'logo:raw',
             //'created',
             //'updated',
 

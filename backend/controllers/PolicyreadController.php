@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\models\Policy;
 use Yii;
 use backend\models\Policyread;
 use backend\models\PolicyreadSearch;
@@ -37,15 +38,14 @@ class PolicyreadController extends Controller
     {
         $searchModel = new PolicyreadSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $policyread = new Policyread;
 
         //return $this->render('index', [
         return $this->render('training', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'policyread' => $policyread,
         ]);
-
-       // return $this->render('_training');
-
     }
 
     /**
@@ -61,12 +61,7 @@ class PolicyreadController extends Controller
         ]);
     }
 
-    public function actionTraining($id)
-    {
-        return $this->render('_training', [
-            'model' => $this->findModel($id),
-        ]);
-    }
+
 
     /**
      * Creates a new Policyread model.
@@ -125,6 +120,38 @@ class PolicyreadController extends Controller
         return $this->redirect(['index']);
     }
 
+
+
+    /************************
+    /** CUSTOM CONTROLLERS **
+    /***********************/
+
+    public function actionTraining($id)
+    {
+        $policyread = new Policyread;
+
+        return $this->render('_training', [
+            'model' => $this->findModel($id),
+            'policyread' => $policyread,
+        ]);
+    }
+
+    public function actionUnread($id)
+    {
+        $model = $this->findModel($id);
+
+        $searchModel = new PolicyreadSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $policyread = new Policyread;
+
+        return $this->render('unread', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'model' => $model,
+            'policyread' => $policyread,
+        ]);
+    }
+
     /**
      * Finds the Policyread model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -141,26 +168,6 @@ class PolicyreadController extends Controller
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 
-
-    /** CUSTOM Fx's */
-    public function getUnread($id)
-    {
-        $policyCount = Policy::find()
-            ->count();
-
-        $policies = Policy::find()
-            ->all();
-
-        $policiesRead = Policyread::find()
-            ->where(['user_id' => $id])
-            ->all();
-
-        //iterate over the array of unread policies
-        if ($policyCount > 0) {
-
-            return array_diff($policies, $policiesRead);
-        }
-    }
 
     public function actionLists($id)
     {
@@ -189,6 +196,13 @@ class PolicyreadController extends Controller
      * @return mixed
      */
     public function actionAjaxView($id)
+    {
+        return $this->renderPartial('_view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    public function actionAjaxViewUnread($id)
     {
         return $this->renderPartial('_view', [
             'model' => $this->findModel($id),

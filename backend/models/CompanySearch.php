@@ -5,12 +5,12 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Policy;
+use backend\models\Company;
 
 /**
- * PolicySearch represents the model behind the search form of `backend\models\Policy`.
+ * CompanySearch represents the model behind the search form of `backend\models\Company`.
  */
-class PolicySearch extends Policy
+class CompanySearch extends Company
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class PolicySearch extends Policy
     public function rules()
     {
         return [
-            [['policy_id', 'ps_id',
-                'title', 'text', 'logo',
+            [['company_id','company_name', 'company_url',
+                'description', 'logo', 'status',
                 'created', 'updated'], 'safe'],
         ];
     }
@@ -42,7 +42,7 @@ class PolicySearch extends Policy
      */
     public function search($params)
     {
-        $query = Policy::find();
+        $query = Company::find();
 
         // add conditions that should always apply here
 
@@ -59,15 +59,17 @@ class PolicySearch extends Policy
         }
 
         // grid filtering conditions
+
         $query->andFilterWhere([
-            'policy_id' => $this->policy_id,
+            'company_id' => $this->company_id,
             'created' => $this->created,
             'updated' => $this->updated,
-            'ps_id' => $this->ps_id,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'text', $this->text]);
+        $query->andFilterWhere(['like', 'company_name', $this->company_name])
+            ->andFilterWhere(['like', 'company_url', $this->company_url])
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'status', $this->status]);
 
         return $dataProvider;
     }

@@ -3,6 +3,7 @@
 namespace backend\models;
 
 use Yii;
+use yii\helpers\Html;
 
 /**
  * This is the model class for table "policypack".
@@ -11,6 +12,7 @@ use Yii;
  * @property string $package
  * @property string $created
  * @property string $updated
+ * @property string $file
  *
  * @property Policy[] $policies
  */
@@ -27,12 +29,15 @@ class Policypack extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
+
+    public $file;
+
     public function rules()
     {
         return [
             [['package'], 'required'],
-            [['created', 'updated'], 'safe'],
-            [['package'], 'string', 'max' => 255],
+            [['logo', 'created', 'updated'], 'safe'],
+            [['logo', 'package'], 'string', 'max' => 255],
         ];
     }
 
@@ -44,6 +49,7 @@ class Policypack extends \yii\db\ActiveRecord
         return [
             'ps_id' => Yii::t('app', 'Ps ID'),
             'package' => Yii::t('app', 'Package'),
+            'file' => Yii::t('app', 'Package Logo'),
             'created' => Yii::t('app', 'Created'),
             'updated' => Yii::t('app', 'Updated'),
         ];
@@ -56,4 +62,10 @@ class Policypack extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Policy::className(), ['ps_id' => 'ps_id']);
     }
+
+    public function getLogoHtml()
+    {
+        return Html::img($this->logo);
+    }
+
 }

@@ -47,12 +47,6 @@ class Policyread extends \yii\db\ActiveRecord
                 'targetClass' => User::className(),
                 'targetAttribute' => ['user_id' => 'id']],
 
-            [['policy_id'],
-                'exist',
-                'skipOnError' => true,
-                'targetClass' => Policypack::className(),
-                'targetAttribute' => ['ps_id' => 'ps_id']],
-
         ];
     }
 
@@ -82,8 +76,35 @@ class Policyread extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
-    public function getPolicies()
+    public function getPolicypack()
     {
-        return $this->hasone(Policypack::className(), ['ps_id' => 'ps_id']);
+        return $this->hasOne(Policypack::className(), ['ps_id' => 'ps_id']);
+    }
+
+    /** CUSTOM Fx's */
+    public function isUnread($id)
+    {
+        $policyCount = Policy::find()
+            ->count();
+
+        $policies = Policy::find()
+            ->select('policy_id')
+            ->asArray()
+            ->column();
+
+        $policiesRead = Policyread::find()
+            ->select('policy_id')
+            ->asArray()
+            ->where(['user_id' => $id])
+            ->column();
+
+        //iterate over the array of unread policies
+        if ($policyCount > 0) {
+
+            if (array_diff($policies, $policiesRead)){
+                return true;
+            }
+            return false;
+        }
     }
 }

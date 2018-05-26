@@ -18,8 +18,7 @@ class PolicyreadSearch extends Policyread
     public function rules()
     {
         return [
-            [['pr_id', 'user_id', 'policy_id'], 'integer'],
-            [['read_date'], 'safe'],
+            [['pr_id', 'user_id', 'policy_id', 'ps_id', 'read_date'], 'safe'],
         ];
     }
 
@@ -58,11 +57,14 @@ class PolicyreadSearch extends Policyread
         }
 
         // grid filtering conditions
+        $query->joinWith('policypack');
+
         $query->andFilterWhere([
             'pr_id' => $this->pr_id,
             'user_id' => $this->user_id,
             'policy_id' => $this->policy_id,
             'read_date' => $this->read_date,
+            'ps_id' => $this->ps_id,
         ]);
 
         return $dataProvider;

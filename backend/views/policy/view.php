@@ -16,26 +16,16 @@ $this->title = Yii::t('app', 'Update Policy: {nameAttribute}', [
 ?>
 <div class="policy-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <p>
+        <?= Html::a(Yii::t('app', 'Company List'), ['company/index'], ['class' => 'btn btn-success'])?>
+        <?= Html::a(Yii::t('app', 'Package List'), ['policypack/index'], ['class' => 'btn btn-warning'])?>
+    </p>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Policy'),
-            ['create'],
-            ['class' => 'btn btn-success'])
-        ?>
-
-        <?= Html::a(Yii::t('app', 'View all Policies'),
-            ['index'],
-            ['class' => 'btn btn-warning'])
-        ?>
-
-        <?= Html::a(Yii::t('app', 'Update Policy'),
-            ['update', 'id' => $model->policy_id],
-            ['class' => 'btn btn-primary'])
-        ?>
-
-        <?= Html::a(Yii::t('app', 'Delete Policy'),
-            ['delete', 'id' => $model->policy_id],
+        <?= Html::a(Yii::t('app', 'Create Policy'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'View all Policies'), ['index'], ['class' => 'btn btn-warning']) ?>
+        <?= Html::a(Yii::t('app', 'Update Policy'), ['update', 'id' => $model->policy_id], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Delete Policy'), ['delete', 'id' => $model->policy_id],
             [
                 'class' => 'btn btn-danger',
                 'data' => [
@@ -45,10 +35,19 @@ $this->title = Yii::t('app', 'Update Policy: {nameAttribute}', [
             ]) ?>
     </p>
 
+    <h1><?= Html::encode($this->title) ?></h1>
+
     <?= DetailView::widget(['model' => $model,
         'attributes' => [
             //'policy_id',
             //'ps_id',
+            [
+                'attribute' => 'logo',
+                'value' => function ($model) {
+                    return $model->getLogoHtml();
+                },
+                'format' => 'raw',
+            ],
             'title',
             'aim',
             'text:ntext',

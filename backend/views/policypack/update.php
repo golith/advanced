@@ -8,11 +8,34 @@ use yii\helpers\Html;
 $this->title = Yii::t('app', 'Updating {nameAttribute}', [
     'nameAttribute' => $model->package,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Policypacks'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->package, 'url' => ['view', 'id' => $model->ps_id]];
+
+$this->params['breadcrumbs'][] = [
+    'label' => Yii::t('app', 'Policypacks'),
+    'url' => [
+        'index'
+    ]];
+
+$this->params['breadcrumbs'][] = [
+    'label' => $model->package,
+    //'url' => ['view', 'id' => $model->ps_id]
+];
+
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update Package');
+
 ?>
 <div class="policypack-update">
+
+    <p>
+        <?= Html::a(Yii::t('app', 'Company List'),
+            ['company/index'], ['class' => 'btn btn-success'])
+        ?>
+        <?= Html::a(Yii::t('app', 'Package List'),
+            ['policypack/index'], ['class' => 'btn btn-warning'])
+        ?>
+        <?= Html::a(Yii::t('app', 'Policy List'),
+            ['index'], ['class' => 'btn btn-danger'])
+        ?>
+    </p>
 
     <p>
         <?= Html::a(Yii::t('app', 'Create a Policy Pack'),
@@ -23,11 +46,6 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update Package');
         <?= Html::a(Yii::t('app', 'View all Policy Packs'),
             ['index'],
             ['class' => 'btn btn-warning'])
-        ?>
-
-        <?= Html::a(Yii::t('app', 'Update this Policy Pack'),
-            ['update', 'id' => $model->ps_id],
-            ['class' => 'btn btn-primary'])
         ?>
 
         <?= Html::a(Yii::t('app', 'Delete this Policy Pack'),

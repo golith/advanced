@@ -34,7 +34,10 @@ $this->title = Yii::t('app', 'Policy');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="policy-index">
-
+    <p>
+        <?= Html::a(Yii::t('app', 'Company List'), ['company/index'], ['class' => 'btn btn-success'])?>
+        <?= Html::a(Yii::t('app', 'Package List'), ['policypack/index'], ['class' => 'btn btn-warning'])?>
+    </p>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
@@ -44,14 +47,16 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <?php Pjax::begin(); ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-           // ['class' => 'yii\grid\SerialColumn'],
+            // ['class' => 'yii\grid\SerialColumn'],
             //'policy_id',
             //'ps_id',
             'title',
+            //'logo:raw',
             //'aim',
             //'text:ntext',
             //'created',
@@ -62,5 +67,5 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php Pjax::end(); ?>
 </div>
 <div id="policy-detail">
-    <?php echo $this->render('_view', ['model'=>$policy]); ?>
+    <?php echo $this->render('_view', ['model' => $policy]); ?>
 </div>

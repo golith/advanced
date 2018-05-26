@@ -3,27 +3,27 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\Policy */
+/* @var $model backend\models\Company */
 
-$this->title = Yii::t('app', 'Update Policy: {nameAttribute}', [
-    'nameAttribute' => $model->title,
+$this->title = Yii::t('app', '{nameAttribute}', [
+    'nameAttribute' => $model->company_name,
 ]);
 
 $this->params['breadcrumbs'][] = [
-    'label' => Yii::t('app', 'Policy'),
+    'label' => Yii::t('app', 'Company List'),
     'url' => [
         'index'
     ]];
 
 $this->params['breadcrumbs'][] = [
-    'label' => $model->title,
-    //'url' => ['view', 'id' => $model->policy_id]
+    'label' => $model->company_name,
+    //'url' => ['view', 'id' => $model->company_id]
 ];
 
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update Policy');
+$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 
 ?>
-<div class="policy-update">
+<div class="company-update">
 
     <p>
         <?= Html::a(Yii::t('app', 'Company List'),
@@ -48,7 +48,7 @@ $this->params['breadcrumbs'][] = Yii::t('app', 'Update Policy');
         ?>
 
         <?= Html::a(Yii::t('app', 'Delete this Policy'),
-            ['delete', 'id' => $model->ps_id],
+            ['delete', 'id' => $model->company_id],
             [
                 'class' => 'btn btn-danger',
                 'data' => [

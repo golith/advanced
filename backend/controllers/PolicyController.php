@@ -8,6 +8,7 @@ use backend\models\PolicySearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * PolicyController implements the CRUD actions for Policy model.
@@ -69,6 +70,20 @@ class PolicyController extends Controller
         $model = new Policy();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            $imageName = $model->title;
+
+            if (UploadedFile::getInstance($model, 'file')) {
+
+                $model->file = UploadedFile::getInstance($model, 'file');
+                $model->file->saveAs('uploads/policy/' . $imageName . '.' . $model->file->extension);
+
+                //save path to the db
+                $model->logo = 'uploads/policy/' . $imageName . '.' . $model->file->extension;
+            } else {
+                $model->file = 'noimage.jpg';
+                $model->file->saveAs('uploads/policy/' . $imageName . '.jpg');
+            }
 
             $model->created = Date ('Y-m-d H:i:s');
             $model->save();

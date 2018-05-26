@@ -8,6 +8,7 @@ use backend\models\PolicypackSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * PolicypackController implements the CRUD actions for Policypack model.
@@ -69,6 +70,21 @@ class PolicypackController extends Controller
         $model = new Policypack();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            $imageName = $model->package;
+
+            if (UploadedFile::getInstance($model, 'file')) {
+
+                $model->file = UploadedFile::getInstance($model, 'file');
+                $model->file->saveAs('uploads/policypack/' . $imageName . '.' . $model->file->extension);
+
+                //save path to the db
+                $model->logo = 'uploads/policypack/' . $imageName . '.' . $model->file->extension;
+            } else {
+                $model->file = 'noimage.jpg';
+                $model->file->saveAs('uploads/policypack/' . $imageName . '.jpg');
+            }
+
             $model->created = Date ('Y-m-d H:i:s');
             $model->save();
             return $this->redirect(['view', 'id' => $model->ps_id]);

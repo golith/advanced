@@ -16,18 +16,17 @@ use yii\widgets\DetailView;
 
         //'policy_id',
         //'ps_id',
-        [
-            'attribute' => 'logo',
-            'value' => function ($model) {
-                return $model->getLogoHtml();
-            },
-            'format' => 'raw',
-        ],
-        'title',
-        'aim',
-        'text:ntext',
-        'created',
-        'updated',
+//        [
+//            'attribute' => 'logo',
+//            'value' => function ($model) {
+//                return $model->getLogoHtml();
+//            },
+//            'format' => 'raw',
+//        ],
+        'pr_id',
+        'user_id',
+        'policy_id',
+        'read_date',
     ],
 ])
 ?>
