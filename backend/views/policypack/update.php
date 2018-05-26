@@ -5,7 +5,7 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model backend\models\Policypack */
 
-$this->title = Yii::t('app', 'Updating {nameAttribute}', [
+$this->title = Yii::t('app', 'Updating {nameAttribute} Package', [
     'nameAttribute' => $model->package,
 ]);
 
