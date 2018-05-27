@@ -110,19 +110,4 @@ $this->title = Yii::t('app', 'Update Policy: {nameAttribute}', [
     ?>
 
 </div>
-<div class="row">
-    <div class="col-lg-20">
-        <?php
-        $pid=7;
-        // get procedure from db proc field
-        $procList = Policyread::getProcedureList($pid);
-
-        //show list of procedure
-        foreach($procList as $pl){
-            $ $pl['proc'];
-            implode($pl);
-        }
-        ?>
-    </div>
-</div>
 
