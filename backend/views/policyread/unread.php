@@ -72,12 +72,12 @@ function getPoliciesIDbyUser($id)
 }
 
 
-function getPolicy($id)
-{
-    if (Policy::getPolicyCount() > 0) {
-        return Policy::getPolicyCount();
-    }
-}
+//function getPolicy($id)
+//{
+//    if (Policy::getPolicyCount() > 0) {
+//        return Policy::getPolicyCount();
+//    }
+//}
 
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Unread Policies'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -100,13 +100,20 @@ $this->params['breadcrumbs'][] = $this->title;
     $ur = Policyread::getPolicyIDUnreadByUserID($user_id);
     // list the policies not read by user by policy_id
     foreach ($ur as $urp) {
-        $pid = $urp['policy_id'] . '<br/>';
-        echo Html::a(Yii::t('app', $pid), ['policy/view', 'id' => $pid],
-            [
-                'class' => 'btn btn-success btn-lg',
-                'target' => '_blank'
-            ]);
-        echo '<br/><br/>';
+        $pid = $urp['policy_id'];
+
+        // get policy title
+        $pTitle = Policy::getPoliciesTitle($pid);
+
+        foreach($pTitle as $pt){
+            $titlep = $pt['title'];
+            echo Html::a(Yii::t('app', $titlep), ['policy/view', 'id' => $pid],
+                [
+                    'class' => 'btn btn-success btn-lg',
+                    'target' => '_blank'
+                ]);
+            echo '<br/><br/>';
+        }
     }
 
     echo '<br/> ';

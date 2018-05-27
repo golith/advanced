@@ -193,11 +193,6 @@ FROM `policy`");
 
     function getPolicyIDUnreadByUserID($user_id)
     {
-
-        // the old way
-        // set up array to hold vars to be returned
-        $array_result = array();
-
         //get all policies
         $connection = Yii::$app->db;
         $command1 = $connection->createCommand("SELECT `policy_id` FROM `policy`");

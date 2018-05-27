@@ -117,6 +117,7 @@ class Policy extends \yii\db\ActiveRecord
         $connection = Yii::$app->db;
         $command = $connection->createCommand("SELECT `title` FROM `policy` WHERE `policy_id` = '$policy_id'");
         $result = $command->queryAll();
+        //$title = $result['title'];
         return $result;
     }
 

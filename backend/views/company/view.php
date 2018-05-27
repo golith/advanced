@@ -11,17 +11,14 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Company List'), 'url
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="company-view">
-
-
-
     <p>
-        <?= Html::a(Yii::t('app', 'Add Company'),
-            ['create'],
-            ['class' => 'btn btn-success'])
-        ?>
-        <?= Html::a(Yii::t('app', 'Update Company'),
-            ['update', 'id' => $model->company_id],
-            ['class' => 'btn btn-primary'])
+        <?= Html::a(Yii::t('app', 'Company List'), ['company/index'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Package List'), ['policypack/index'], ['class' => 'btn btn-warning']) ?>
+        <?= Html::a(Yii::t('app', 'Policy List'), ['policy/index'], ['class' => 'btn btn-primary'])?>
+    </p>
+    <p>
+        <?= Html::a(Yii::t('app', 'Add Company'), ['create'], ['class' => 'btn btn-success'])?>
+        <?= Html::a(Yii::t('app', 'Update Company'), ['update', 'id' => $model->company_id],['class' => 'btn btn-primary'])
         ?>
         <?= Html::a(Yii::t('app', 'Delete Company'),
             ['delete', 'id' => $model->company_id],

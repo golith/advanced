@@ -12,17 +12,13 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="policypack-view">
     <p>
-        <?= Html::a(Yii::t('app', 'Company List'), ['company/index'], ['class' => 'btn btn-success'])?>
-        <?= Html::a(Yii::t('app', 'Policy List'), ['policy/index'], ['class' => 'btn btn-primary'])?>
+        <?= Html::a(Yii::t('app', 'Company List'), ['company/index'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Policy List'), ['policy/index'], ['class' => 'btn btn-primary']) ?>
     </p>
-
     <p>
         <?= Html::a(Yii::t('app', 'Create Policy Pack'), ['create'], ['class' => 'btn btn-success']) ?>
-
         <?= Html::a(Yii::t('app', 'View all Policy Packs'), ['index'], ['class' => 'btn btn-warning']) ?>
-
         <?= Html::a(Yii::t('app', 'Update Policy Pack'), ['update', 'id' => $model->ps_id], ['class' => 'btn btn-primary']) ?>
-
         <?= Html::a(Yii::t('app', 'Delete Policy Pack'), ['delete', 'id' => $model->ps_id],
             [
                 'class' => 'btn btn-danger',
