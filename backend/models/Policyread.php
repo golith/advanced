@@ -280,4 +280,14 @@ FROM `policy`");
             return false;
         }
     }
+
+    public function getProcedureList($policy_id)
+    {
+        $connection = Yii::$app->db;
+        $command = $connection->createCommand("SELECT `proc` FROM `policy` WHERE `policy_id` = '$policy_id'");
+        $result = $command->queryAll();
+        return $result;
+    }
+
+
 }

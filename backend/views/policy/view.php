@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\widgets\DetailView;
+use yii\widgets\ListView;
 use backend\models\Policyread;
 
 /* @var $this yii\web\View */
@@ -108,5 +109,20 @@ $this->title = Yii::t('app', 'Update Policy: {nameAttribute}', [
     ])
     ?>
 
+</div>
+<div class="row">
+    <div class="col-lg-20">
+        <?php
+        $pid=7;
+        // get procedure from db proc field
+        $procList = Policyread::getProcedureList($pid);
+
+        //show list of procedure
+        foreach($procList as $pl){
+            $ $pl['proc'];
+            implode($pl);
+        }
+        ?>
+    </div>
 </div>
 
