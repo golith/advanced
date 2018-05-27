@@ -120,6 +120,8 @@ class PolicyController extends Controller
         ]);
     }
 
+
+
     /**
      * Deletes an existing Policy model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -157,6 +159,11 @@ class PolicyController extends Controller
         ]);
     }
 
+    public function hasUserSeenPolicy()
+    {
+
+
+    }
 
 
 }

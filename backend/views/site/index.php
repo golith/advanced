@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use backend\models\Policy;
 use backend\models\Policyread;
 
 /* @var $this yii\web\View */
@@ -24,10 +25,24 @@ $user_id = Yii::$app->user->identity->getId();
         <br/> Using : <?= Html::encode(Yii::$app->name) ?>
         <br/> version : <?= Yii::$app->version ?>
         <br/> Your I.P is :<?= Yii::$app->getRequest()->getUserIP(); ?>
-         <?php if (Policyread::isUnread($user_id) === true) { ?>
 
-         <br/> You have a new Unread Policy to attend to
-        <br/> <?php echo Html::a(Yii::t('app', 'Read Now'), ['policyread/unread', 'id' => $user_id],
+        <?php if (Policyread::isUnread($user_id) === true) { ?>
+
+         <br/> You have <?php
+             $counter = Policyread::getPolicyUnreadByUserCount($user_id);
+             //echo '<br/><h1 style="color: red;">';
+            echo '<br/><h1>';
+             echo Html::a(Yii::t('app', $counter), ['policyread/unread', 'id' => $user_id],
+                [
+                    'target' => '_blank'
+                ]);
+
+            // . $counter
+             echo '</h1><br/>';
+             echo 'Unread polic';
+             echo ($counter > 1) ? 'ies' : 'y';
+             echo ' to attend to.<br/>';
+             echo Html::a(Yii::t('app', 'Read Now'), ['policyread/unread', 'id' => $user_id],
                         [
                             'class' => 'btn btn-warning btn-lg',
                             'target' => '_blank'

@@ -86,16 +86,51 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="policyread-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-    <?php
+<!--    --><?php //$toberead = toRead($user_id); ?>
+<?php
+
+    // Give total policy count
+    echo 'There are ' . Policy::getPolicyCount() . ' Polcies.<br/>';
+
+    // show array of policy ID's
+    $policies = Policy::getPoliciesID();
+
+    // list all policies by title
+    $policytitle = Policyread::getPolicyIDandTitle();
+
+//    echo print_r($policies) . '<br/>';
+
+    foreach ($policytitle as $pt) {
+        $a_button_id = $pt['policy_id'];
+        $a_button_title = $pt['title'];
+        echo Html::a(Yii::t('app', $a_button_title), ['policy/view', 'id' => $a_button_id],
+            [
+                'class' => 'btn btn-success btn-lg',
+                'target' => '_blank',
+            ]);
+        echo '<br/><br/>';
+    }
+    echo '<br/> ';
+     //Give total count by user
+    echo 'User <strong>' . Yii::$app->user->identity->username . '</strong>' .
+        ' has read ' . Policyread::getPolicyreadByUserCount($user_id) . '<br/>';
+
+
+    // show array of policy ID's
+    $policiesreadarray = Policyread::getPoliciesID();
+    //echo print_r($policiesreadarray) . '<br/>';
+
+    // list the policies read by user
+    $titlePolicy = Policyread::getPolicyIDandTitleReadByUserID($user_id);
+    foreach ($titlePolicy as $tp) {
+        echo $tp['policy_id'] . ' ' . $tp['title'] . '<br/>';
+    }
+
+    echo '<br/> ';
 
     // Give total count by user
-    $countP = Policyread::getPolicyUnreadByUserCount($user_id);
-
     echo 'User <strong>' . Yii::$app->user->identity->username . '</strong>' .
-        ' needs to read ' . Policyread::getPolicyUnreadByUserCount($user_id) .
-        ' polic';
-    echo ($countP > 1) ? 'ies' : 'y';
-    echo '<br/>';
+        ' needs to read ' . Policyread::getPolicyUnreadByUserCount($user_id) . '<br/>';
 
     $ur = Policyread::getPolicyIDUnreadByUserID($user_id);
     // list the policies not read by user by policy_id

@@ -11,7 +11,8 @@ use yii\helpers\Html;
  * @property string $policy_id
  * @property string $title
  * @property string $aim
- * @property string $text
+ * @property string $policy
+ * @property string $proc
  * @property string $created
  * @property string $updated
  * @property string $ps_id
@@ -38,17 +39,17 @@ class Policy extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'text', 'ps_id'], 'required'],
+            [['title', 'ps_id'], 'required'],
 
-            [['text', 'aim'], 'string'],
+            [['policy', 'proc', 'aim'], 'string'],
 
-            [['title', 'text', 'ps_id', 'aim', 'logo',
+            [['title', 'policy', 'ps_id', 'aim', 'logo', 'proc',
 
                 'created', 'updated'], 'safe'],
 
             [['ps_id'], 'integer'],
 
-            [[ 'title'], 'string', 'max' => 255],
+            [['title'], 'string', 'max' => 255],
 
             [['ps_id'],
                 'exist',
@@ -74,7 +75,8 @@ class Policy extends \yii\db\ActiveRecord
             'file' => Yii::t('app', 'Policy Logo'),
             'title' => Yii::t('app', 'Title'),
             'aim' => Yii::t('app', 'Aim'),
-            'text' => Yii::t('app', 'Policy'),
+            'policy' => Yii::t('app', 'Policy'),
+            'proc' => Yii::t('app', 'Procedure'),
             'created' => Yii::t('app', 'Created'),
             'updated' => Yii::t('app', 'Updated'),
             'ps_id' => Yii::t('app', 'Package'),
@@ -99,4 +101,46 @@ class Policy extends \yii\db\ActiveRecord
         return Html::img($this->logo);
     }
 
+
+    function getPolicyCount()
+    {
+        return Policy::find()->count();
+    }
+
+    function getPoliciesID()
+    {
+        return Policy::find()->select('policy_id')->asArray()->all();
+    }
+
+    function getPoliciesTitle($policy_id)
+    {
+        $connection = Yii::$app->db;
+        $command = $connection->createCommand("SELECT `title` FROM `policy` WHERE `policy_id` = '$policy_id'");
+        $result = $command->queryAll();
+        return $result;
+    }
+
+    function getPackageID($policy_id)
+    {
+        $connection = Yii::$app->db;
+        $command = $connection->createCommand("SELECT `ps_id` FROM `policy` WHERE `policy_id` = '$policy_id'");
+        $result = $command->queryAll();
+        return $result;
+    }
+
+    public function updateUserPolicyRead($user_id, $policy_id, $package_id)
+    {
+        $connection = Yii::$app->db;
+        $command = $connection->createCommand("INSERT INTO `policyread` (`pr_id`, `user_id`, `policy_id`, `ps_id`, `read_date`) VALUES (NULL, '$user_id', '$policy_id', '$package_id', now()");
+        $result = $command->queryAll();
+        
+        // check if successful
+        if($result) {
+            redirect(['site/index', 'id' => Yii::$app->user->id]);
+        } else {
+            $msg = 'problem updating database';
+            return $msg;
+        }
+
+    }
 }

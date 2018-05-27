@@ -1,7 +1,9 @@
 <?php
 
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 use yii\widgets\DetailView;
+use backend\models\Policyread;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Policy */
@@ -17,8 +19,8 @@ $this->title = Yii::t('app', 'Update Policy: {nameAttribute}', [
 <div class="policy-view">
 
     <p>
-        <?= Html::a(Yii::t('app', 'Company List'), ['company/index'], ['class' => 'btn btn-success'])?>
-        <?= Html::a(Yii::t('app', 'Package List'), ['policypack/index'], ['class' => 'btn btn-warning'])?>
+        <?= Html::a(Yii::t('app', 'Company List'), ['company/index'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Package List'), ['policypack/index'], ['class' => 'btn btn-warning']) ?>
     </p>
 
     <p>
@@ -37,10 +39,57 @@ $this->title = Yii::t('app', 'Update Policy: {nameAttribute}', [
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <?php
+    //check if user has read policy and if not then show button
+    $uid = Yii::$app->user->id;
+    $pid = $model->policy_id;
+    $package = $model->ps_id;
+    ?>
+    <?= HTML::hiddenInput('user_id', Yii::$app->user->id); ?>
+    <?= HTML::hiddenInput('policy_id', $model->policy_id); ?>
+    <?= HTML::hiddenInput('ps_id', $model->ps_id);
+//
+//    echo '<br/>User id is : ' . $uid . '<br/>';
+//    echo '<br/>Policy id is : ' . $model->policy_id . '<br/>';
+//    echo '<br/>Package id is : ' . $model->ps_id . '<br/>';
+
+    if (Policyread::isRead($uid, $package, $pid) == false) { ?>
+        <?php $form = ActiveForm::begin(); ?>
+        <?= Html::submitButton(Yii::t('app', 'I have Read this Policy'),
+            [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => Yii::t('app', 'Are you sure you understand this Policy?'),
+                    'method' => 'post',
+                ]
+            ]
+        );
+        ?>
+
+
+        <?php // echo Html::a(Yii::t('app', 'I have Read this Policy'), [
+//            'understood', [
+//                'id' => $model->policy_id,
+//                'user_id' => $uid,
+//            ],
+//        ],
+//            [
+//                'class' => 'btn btn-danger',
+//                'data' => [
+//                    'confirm' => Yii::t('app', 'Are you sure you understand this Policy?'),
+//                    'method' => 'post',
+//                ],
+//            ]);
+//    }
+        ?>
+        <?php ActiveForm::end(); ?>
+    <?php } ?>
+
     <?= DetailView::widget(['model' => $model,
         'attributes' => [
             //'policy_id',
             //'ps_id',
+            //'policypack.package.',
             [
                 'attribute' => 'logo',
                 'value' => function ($model) {
@@ -50,8 +99,9 @@ $this->title = Yii::t('app', 'Update Policy: {nameAttribute}', [
             ],
             'title',
             'aim',
-            'text:ntext',
-           // 'created',
+            'policy:ntext',
+            'proc:ntext',
+            // 'created',
             //'updated',
 
         ],

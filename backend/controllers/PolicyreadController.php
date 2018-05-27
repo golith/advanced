@@ -152,6 +152,52 @@ class PolicyreadController extends Controller
         ]);
     }
 
+    public function isUnreadCount($id)
+    {
+        $policyCount = Policy::find()
+            ->count();
+
+        if ($policyCount > 0) {
+
+            return $policyCount;
+
+        }
+
+        return 0;
+
+    }
+
+    public function toRead($id)
+    {
+
+        $policyCount = Policy::find()
+            ->count();
+
+        $policies = Policy::find()
+            ->select('policy_id')
+            ->asArray()
+            ->column();
+
+        $policiesRead = Policyread::find()
+            ->select('policy_id')
+            ->asArray()
+            ->where(['user_id' => $id])
+            ->column();
+
+        //iterate over the array of unread policies
+        if ($policyCount > 0) {
+
+            if (array_diff($policies, $policiesRead)) {
+
+                return array_diff($policies, $policiesRead);
+
+            } else {
+
+                return false;
+            }
+        }
+    }
+
     /**
      * Finds the Policyread model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -212,5 +258,26 @@ class PolicyreadController extends Controller
     public function getPolicies()
     {
         return $this->hasMany(Policy::className(), ['policy_id' => 'policy_id']);
+    }
+
+    public function actionUnderstood($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+
+            $model = $this->findModel($id);
+            $model->user_id = $this->$user_id;
+            $model->policy_id = $policy_id;
+            $model->ps_id = '1';
+            $model->read_date = Date ('Y-m-d H:i:s');
+            $model->save();
+
+            return $this->redirect(['view', 'id' => $model->policy_id]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 }

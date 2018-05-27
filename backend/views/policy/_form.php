@@ -36,7 +36,9 @@ use backend\models\Policypack;
 
     <?= $form->field($model, 'aim')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'text')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'policy')->textarea(['rows' => 6]) ?>
+
+    <?= $form->field($model, 'proc')->textarea(['rows' => 6]) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'),

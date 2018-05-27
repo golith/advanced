@@ -19,7 +19,7 @@ class PolicySearch extends Policy
     {
         return [
             [['policy_id', 'ps_id',
-                'title', 'text', 'logo',
+                'title', 'policy', 'proc', 'logo',
                 'created', 'updated'], 'safe'],
         ];
     }
@@ -67,7 +67,8 @@ class PolicySearch extends Policy
         ]);
 
         $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'text', $this->text]);
+            ->andFilterWhere(['like', 'policy', $this->policy])
+            ->andFilterWhere(['like', 'proc', $this->proc]);
 
         return $dataProvider;
     }
