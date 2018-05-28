@@ -13,7 +13,7 @@ $this->title = $titlebar;
 ?>
 <div class="site-index">
     <div class="jumbotron">
-        <h1>Welcome <?= $username; ?><br/>to the<br/> IT System Design <br/>Console!</h1>
+        <h3>Welcome <?= $username; ?><br/>to the<br/> IT System Design <br/>Console!</h3>
         <?php
         if (Yii::$app->user->getIsGuest()){
             ?>
@@ -121,6 +121,7 @@ $this->title = $titlebar;
             <div class="col-lg-12">
                 <h2>Worker Health& Safety Module</h2>
             </div>
+        </div>
             <div class="row">
                 <div class="col-lg-12">
                     <?= Html::a(Yii::t('app', 'Incident Reporting'), ['policy/index'],

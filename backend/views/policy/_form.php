@@ -3,18 +3,14 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
+use backend\models\Policy;
 use backend\models\Policypack;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\Policy */
 /* @var $form yii\widgets\ActiveForm */
 
-
-
-
-
 ?>
-
 <div class="policy-form">
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
@@ -40,22 +36,32 @@ use backend\models\Policypack;
 
     <?= $form->field($model, 'proc')->textarea(['rows' => 6]) ?>
 
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Save'),
-            ['class' => 'btn btn-success'])
-        ?>
+<!--    <p class="text-procStep">-->
+<!--        <label for="procStep">Procedure Step <span class="procStep-number">1</span></label>-->
+<!--        <input class="form-control" type="text" name="item[] " value="" id="procStep"/>-->
+<!--        <a href="#" class="remove-item">Remove</a>-->
+<!---->
+<?php //echo Html::button('Add Step', [
+//    'class' => 'glyphicon glyphicon-plus btn btn-default btn-lg add-items'])
+//?>
+<!--</p>-->
 
-        <?= Html::a(Yii::t('app', 'Dont Save'),
-            ['index'],
-            ['class' => 'btn btn-danger',
-                'data' => [
-                    'confirm' => Yii::t('app', 'Are you sure you want to leave this page?'),
-                    'method' => 'post',
-                ],
-            ])
-        ?>
-    </div>
+<div class="form-group">
+    <?= Html::submitButton(Yii::t('app', 'Save'),
+        ['class' => 'btn btn-success'])
+    ?>
 
-    <?php ActiveForm::end(); ?>
+    <?= Html::a(Yii::t('app', 'Dont Save'),
+        ['index'],
+        ['class' => 'btn btn-danger',
+            'data' => [
+                'confirm' => Yii::t('app', 'Are you sure you want to leave this page?'),
+                'method' => 'post',
+            ],
+        ])
+    ?>
+</div>
+
+<?php ActiveForm::end(); ?>
 
 </div>
