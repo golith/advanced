@@ -57,7 +57,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'policy.title',
             'read_date',
 
-            ['class' => 'yii\grid\ActionColumn', 'template' => '{view} {update} {delete} '],
+            //['class' => 'yii\grid\ActionColumn', 'template' => '{view} {update} {delete} '],
         ],
     ]); ?>
     <?php Pjax::end(); ?>
