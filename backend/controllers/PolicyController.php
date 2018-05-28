@@ -2,9 +2,11 @@
 
 namespace backend\controllers;
 
+use backend\models\PolicyProc;
 use Yii;
 use backend\models\Policy;
 use backend\models\PolicySearch;
+use backend\models\Model;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -68,32 +70,60 @@ class PolicyController extends Controller
     public function actionCreate()
     {
         $model = new Policy();
+        $modelsProcItem = [new PolicyProc];
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
             $imageName = $model->title;
+            $modelsProcItem = Model::createMultiple(PolicyProc::classname());
+            Model::loadMultiple($modelsProcItem, Yii::$app->request->post());
 
-            if (UploadedFile::getInstance($model, 'file')) {
+            // validate all models
+            $valid = $model->validate();
+            $valid = Model::validateMultiple($modelsProcItem) && $valid;
 
-                $model->file = UploadedFile::getInstance($model, 'file');
-                $model->file->saveAs('uploads/policy/' . $imageName . '.' . $model->file->extension);
+            if ($valid) {
+                $transaction = \Yii::$app->db->beginTransaction();
+                try {
+                    if ($flag = $model->save(false)) {
+                        foreach ($modelsProcItem as $modelProcItem) {
+                            $modelProcItem->policy_id = $model->policy_id; // check this line it may cause a bug
 
-                //save path to the db
-                $model->logo = 'uploads/policy/' . $imageName . '.' . $model->file->extension;
-            } else {
-                $model->file = 'noimage.jpg';
-                $model->file->saveAs('uploads/policy/' . $imageName . '.jpg');
+                            // add rest of function
+                            if (UploadedFile::getInstance($model, 'file')) {
+
+                                $model->file = UploadedFile::getInstance($model, 'file');
+                                $model->file->saveAs('uploads/policy/' . $imageName . '.' . $model->file->extension);
+
+                                //save path to the db
+                                $model->logo = 'uploads/policy/' . $imageName . '.' . $model->file->extension;
+                                $model->created = Date('Y-m-d H:i:s');
+                            } else {
+                                $model->file = 'noimage.jpg';
+                                $model->file->saveAs('uploads/policy/' . $imageName . '.jpg');
+                                $model->created = Date('Y-m-d H:i:s');
+                            }
+
+                            if (!($flag = $modelProcItem->save(false))) {
+                                $transaction->rollBack();
+                                break;
+                            }
+                        }
+                    }
+                    if ($flag) {
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $model->policy_id]);
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                }
             }
-
-            $model->created = Date ('Y-m-d H:i:s');
-            $model->save();
-
-            return $this->redirect(['view', 'id' => $model->policy_id]);
+        } else {
+            return $this->render('create', [
+                'model' => $model,
+                'modelsProcItem' => (empty($modelsProcItem)) ? [new PolicyProc] : $modelsProcItem
+            ]);
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
     }
 
     /**
@@ -109,7 +139,7 @@ class PolicyController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
 
-            $model->created = Date ('Y-m-d H:i:s');
+            $model->created = Date('Y-m-d H:i:s');
             $model->save();
 
             return $this->redirect(['view', 'id' => $model->policy_id]);
@@ -119,7 +149,6 @@ class PolicyController extends Controller
             'model' => $model,
         ]);
     }
-
 
 
     /**
@@ -154,8 +183,8 @@ class PolicyController extends Controller
 
     public function actionAjaxView($id)
     {
-        return $this->renderPartial('_view',[
-            'model'=> $this->findModel($id),
+        return $this->renderPartial('_view', [
+            'model' => $this->findModel($id),
         ]);
     }
 

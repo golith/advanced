@@ -39,7 +39,7 @@ class Policy extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'ps_id'], 'required'],
+            [['title'], 'required'],
 
             [['policy', 'proc', 'aim'], 'string'],
 

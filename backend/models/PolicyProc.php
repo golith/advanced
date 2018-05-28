@@ -44,8 +44,8 @@ class PolicyProc extends \yii\db\ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'proc_step' => Yii::t('app', 'Proc Step'),
-            'proc_text' => Yii::t('app', 'Proc Text'),
+            'proc_step' => Yii::t('app', 'Procedure Step'),
+            'proc_text' => Yii::t('app', 'Procedure Text'),
             'policy_id' => Yii::t('app', 'Policy ID'),
         ];
     }
